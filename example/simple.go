@@ -1,8 +1,8 @@
 package main
 
 import (
-	"chatflow"
 	"fmt"
+	"github.com/Tnze/chatflow"
 	"math/rand"
 	"strconv"
 )

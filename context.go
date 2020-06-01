@@ -29,7 +29,7 @@ func (c *Context) handle(msg string) (ok bool) {
 	select {
 	case c.in <- msg:
 		return true
-	default:
+	case <-c.ctx.Done():
 		return false
 	}
 }

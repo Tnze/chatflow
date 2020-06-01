@@ -37,11 +37,15 @@ func (r *Router) Regexp(reg regexp.Regexp, hf HandleFunc) {
 }
 
 func (r *Router) HandleMsg(source Source, msg string) {
-	c := r.newContext(context.TODO(), source)
+	ctx, cancel := context.WithCancel(context.TODO())
+	defer cancel()
+	c := r.newContext(ctx, source)
+Re:
 	if actual, ok := r.handleSession.LoadOrStore(source, c); ok {
 		if actual.(*Context).handle(msg) {
 			return
 		}
+		goto Re
 	}
 	defer r.handleSession.Delete(source)
 	for _, v := range r.handleList {
